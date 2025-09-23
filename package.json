@@ -10,13 +10,15 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "framer-motion": "^12.23.19",
     "gsap": "^3.13.0",
     "lucide-react": "^0.544.0",
     "motion": "^12.23.19",
     "next": "15.5.3",
     "ogl": "^1.0.11",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-parallax-tilt": "^1.7.309"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

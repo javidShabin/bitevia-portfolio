@@ -5,6 +5,7 @@ import SplitText from "@/components/ui/SplitText";
 import AboutPage from "./about/page";
 import { Github, Linkedin, Instagram, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
+import ServicesPage from "./service/page";
 
 export default function Home() {
   return (
@@ -98,6 +99,8 @@ export default function Home() {
       </div>
 
       <AboutPage />
+
+      <ServicesPage />
     </>
   );
 }

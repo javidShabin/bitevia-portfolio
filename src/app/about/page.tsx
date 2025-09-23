@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center px-6 py-20">
+    <div className="min-h-[90vh] bg-[#0a0a0a] text-white flex flex-col items-center justify-center px-6 py-20">
       {/* Heading Section */}
       <motion.h1
         className="text-5xl md:text-2xl font-extrabold text-center text-white"
@@ -19,7 +19,7 @@ export default function AboutPage() {
       </motion.h1>
 
       <motion.p
-        className="mt-6 max-w-2xl text-center text-gray-400 text-lg"
+        className="mt-4 max-w-2xl text-center text-gray-400 text-lg"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -68,7 +68,7 @@ export default function AboutPage() {
         <p className="mt-3 text-gray-400 max-w-xl mx-auto">
           Whether you’re a startup or an enterprise, we craft digital solutions that scale with your ambitions.
         </p>
-        <button className="mt-6 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-full shadow-lg transition transform hover:scale-105 active:scale-95">
+        <button className="mt-6 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-md shadow-lg transition transform hover:scale-105 active:scale-95">
           Get in Touch
         </button>
       </motion.div>
