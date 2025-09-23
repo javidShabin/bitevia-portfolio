@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
@@ -143,8 +143,8 @@ export const Plasma: React.FC<PlasmaProps> = ({
     const mesh = new Mesh(gl, { geometry, program });
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!mouseInteractive) return;
-      const rect = containerRef.current!.getBoundingClientRect();
+      if (!mouseInteractive || !containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
       mousePos.current.x = e.clientX - rect.left;
       mousePos.current.y = e.clientY - rect.top;
       const mouseUniform = program.uniforms.uMouse.value as Float32Array;
@@ -157,7 +157,8 @@ export const Plasma: React.FC<PlasmaProps> = ({
     }
 
     const setSize = () => {
-      const rect = containerRef.current!.getBoundingClientRect();
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
       const width = Math.max(1, Math.floor(rect.width));
       const height = Math.max(1, Math.floor(rect.height));
       renderer.setSize(width, height);
@@ -173,14 +174,14 @@ export const Plasma: React.FC<PlasmaProps> = ({
     let raf = 0;
     const t0 = performance.now();
     const loop = (t: number) => {
-      let timeValue = (t - t0) * 0.001;
+      const timeValue = (t - t0) * 0.001;
 
       if (direction === 'pingpong') {
         const cycle = Math.sin(timeValue * 0.5) * directionMultiplier;
-        (program.uniforms.uDirection as any).value = cycle;
+        (program.uniforms.uDirection as { value: number }).value = cycle;
       }
 
-      (program.uniforms.iTime as any).value = timeValue;
+      (program.uniforms.iTime as { value: number }).value = timeValue;
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
