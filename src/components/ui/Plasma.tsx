@@ -103,7 +103,7 @@ export const Plasma: React.FC<PlasmaProps> = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const useCustomColor = 1.0; // ✅ always use custom color
+    const useCustomColor = 1.0;
     const customColorRgb = hexToRgb("#974EB5"); 
 
     const directionMultiplier = direction === 'reverse' ? -1.0 : 1.0;
