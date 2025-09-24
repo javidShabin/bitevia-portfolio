@@ -6,7 +6,7 @@ export default function page() {
     return (
     
 <>
-<div>
+<div className='overflow-hidden h-screen'>
 
 
     <div style={{ height: '500px',position: 'relative', width:'90%' }}>
