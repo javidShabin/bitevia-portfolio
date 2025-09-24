@@ -5,11 +5,43 @@ import CardSwap, { Card } from '../../components/ui/CardSwap'
 import { Vortex } from '@/components/ui/vortex';
 
 export default function Page() {
+
+    const cardDatas = [
+        {
+            id: 1,
+            image: "/images/project1.jpeg",
+            projectName: "Project Beta",
+            decscription: "E-commerce platform with seamless payment integration.",
+            techStack: ["Next.js", "MongoDB", "Stripe"]
+        },
+        {
+            id: 2,
+            image: "/images/project1.jpeg",
+            projectName: "Project Beta",
+            decscription: "E-commerce platform with seamless payment integration.",
+            techStack: ["Next.js", "MongoDB", "Stripe"]
+        },
+        {
+            id: 3,
+            image: "/images/project1.jpeg",
+            projectName: "Project Beta",
+            decscription: "E-commerce platform with seamless payment integration.",
+            techStack: ["Next.js", "MongoDB", "Stripe"]
+        },
+        {
+            id: 4,
+            image: "/images/project1.jpeg",
+            projectName: "Project Beta",
+            decscription: "E-commerce platform with seamless payment integration.",
+            techStack: ["Next.js", "MongoDB", "Stripe"]
+        }
+    ]
+
     return (
         <>
             <Vortex
                 backgroundColor="black"
-                >
+            >
                 <div className="overflow-hidden min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-12 py-12 gap-12">
 
                     {/* Left side text */}
@@ -46,31 +78,22 @@ export default function Page() {
                                 delay={5000}
                                 pauseOnHover={false}
                             >
-                                <Card>
-                                    <h3 className="text-xl font-semibold text-white">Card 1</h3>
-                                    <p className="text-gray-300">Your content here</p>
-                                </Card>
-                                <Card>
-                                    <h3 className="text-xl font-semibold text-white">Card 2</h3>
-                                    <p className="text-gray-300">Your content here</p>
-                                </Card>
-                                <Card>
-                                    <h3 className="text-xl font-semibold text-white">Card 3</h3>
-                                    <p className="text-gray-300">Your content here</p>
-                                </Card>
-                                <Card>
-                                    <h3 className="text-xl font-semibold text-white">Card 4</h3>
-                                    <p className="text-gray-300">Your content here</p>
-                                </Card>
-                                <Card>
-                                    <h3 className="text-xl font-semibold text-white">Card 5</h3>
-                                    <p className="text-gray-300">Your content here</p>
-                                </Card>
-                                <Card>
-                                    <h3 className="text-xl font-semibold text-white">Card 6</h3>
-                                    <p className="text-gray-300">Your content here</p>
-                                </Card>
+
+                                {
+                                    cardDatas.map((project) => (
+                                        <Card key={project.id}>
+                                            <img src={project.image} alt="Project 5" className="w-full h-32 object-cover rounded-md mb-4" />
+                                            <h3 className="text-xl font-semibold text-white">{project.projectName}</h3>
+                                            <p className="text-gray-300 mb-2">{project.decscription}</p>
+                                            <p className="text-purple-400 text-sm">Tech: {project.techStack}</p>
+                                        </Card>
+                                    ))
+                                }
+
+
+
                             </CardSwap>
+
                         </div>
                     </motion.div>
                 </div>
