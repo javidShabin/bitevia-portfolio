@@ -19,6 +19,7 @@ export const Header = () => {
                             <Link href="/services" className="text-white/90 hover:text-white transition-colors duration-300">Services</Link>
                             <Link href="/contact" className="text-white/90 hover:text-white transition-colors duration-300">Contact</Link>
                             <Link href="/portfolio" className="text-white/90 hover:text-white transition-colors duration-300">Portfolio</Link>
+                            <Link href="/projects" className="text-white/90 hover:text-white transition-colors duration-300">Projects</Link>
                         </div>
 
                         {/* CTA Button */}
