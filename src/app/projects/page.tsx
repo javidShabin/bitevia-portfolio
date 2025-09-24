@@ -81,12 +81,41 @@ export default function Page() {
 
                                 {
                                     cardDatas.map((project) => (
-                                        <Card key={project.id}>
-                                            <img src={project.image} alt="Project 5" className="w-full h-32 object-cover rounded-md mb-4" />
-                                            <h3 className="text-xl font-semibold text-white">{project.projectName}</h3>
-                                            <p className="text-gray-300 mb-2">{project.decscription}</p>
-                                            <p className="text-purple-400 text-sm">Tech: {project.techStack}</p>
+                                        <Card
+                                            key={project.id}
+                                            className="overflow-hidden rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"
+
+                                        >
+                                            {/* Project Image */}
+                                            <div className="relative w-[95%] mx-auto h-[50%] overflow-hidden rounded-xl mt-3">
+                                                <img
+                                                    src={project.image}
+                                                    alt={project.projectName}
+                                                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                                />
+                                                {/* Overlay */}
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                            </div>
+
+                                            {/* Card Content */}
+                                            <div className="p-4">
+                                                <h3 className="text-2xl font-bold text-white mb-2">{project.projectName}</h3>
+                                                <p className="text-gray-300 mb-3 line-clamp-3">{project.decscription}</p>
+
+                                                {/* Tech Stack */}
+                                                <div className="flex flex-wrap gap-2">
+                                                    {project.techStack.map((tech, index) => (
+                                                        <span
+                                                            key={index}
+                                                            className="bg-purple-800/50 text-purple-400 text-xs font-medium px-2 py-1 rounded"
+                                                        >
+                                                            {tech}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </Card>
+
                                     ))
                                 }
 
@@ -101,3 +130,4 @@ export default function Page() {
         </>
     )
 }
+
