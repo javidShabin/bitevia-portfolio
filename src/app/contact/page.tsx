@@ -89,7 +89,7 @@ const Contact: React.FC = () => {
                 Get in Touch
               </h2>
               <p className="text-gray-300 leading-relaxed">
-                We're a freelance web development team. Reach out for projects, collaborations, or just to say hello!
+                We&apos;re a freelance web development team. Reach out for projects, collaborations, or just to say hello!
               </p>
             </div>
 
