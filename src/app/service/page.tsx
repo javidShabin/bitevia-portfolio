@@ -10,7 +10,7 @@ export default function ServicesPage() {
     <div className="min-h-[100vh] bg-[#0a0a0a] text-white flex flex-col items-center px-6 py-20">
       {/* Heading Section */}
       <motion.h1
-        className="text-5xl md:text-4xl font-extrabold text-center"
+        className="text-5xl md:text-2xl font-extrabold text-center"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}

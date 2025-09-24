@@ -1,4 +1,5 @@
-import React from 'react'
+import Link from 'next/link';
+import React from 'react';
 
 export const Header = () => {
     return (
@@ -13,18 +14,11 @@ export const Header = () => {
 
                         {/* Navigation Links */}
                         <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-                            <a href="#" className="text-white/90 hover:text-white transition-colors duration-300">
-                                Home
-                            </a>
-                            <a href="#" className="text-white/90 hover:text-white transition-colors duration-300">
-                                About
-                            </a>
-                            <a href="#" className="text-white/90 hover:text-white transition-colors duration-300">
-                                Services
-                            </a>
-                            <a href="#" className="text-white/90 hover:text-white transition-colors duration-300">
-                                Contact
-                            </a>
+                            <Link href="/" className="text-white/90 hover:text-white transition-colors duration-300">Home</Link>
+                            <Link href="/about" className="text-white/90 hover:text-white transition-colors duration-300">About</Link>
+                            <Link href="/services" className="text-white/90 hover:text-white transition-colors duration-300">Services</Link>
+                            <Link href="/contact" className="text-white/90 hover:text-white transition-colors duration-300">Contact</Link>
+                            <Link href="/portfolio" className="text-white/90 hover:text-white transition-colors duration-300">Portfolio</Link>
                         </div>
 
                         {/* CTA Button */}
@@ -35,5 +29,5 @@ export const Header = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
