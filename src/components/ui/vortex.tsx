@@ -6,7 +6,7 @@ import { createNoise3D } from "simplex-noise";
 import { motion } from "motion/react";
 
 interface VortexProps {
-  children?: any;
+  children?: React.ReactNode;
   className?: string;
   containerClassName?: string;
   particleCount?: number;
@@ -21,7 +21,7 @@ interface VortexProps {
 
 export const Vortex = (props: VortexProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number | undefined>(undefined);
 
   const particleCount = props.particleCount || 700;
@@ -45,47 +45,50 @@ export const Vortex = (props: VortexProps) => {
 
   const backgroundColor = props.backgroundColor || "#000000";
 
-  let tick = 0;
+  const tickRef = useRef(0);
   const noise3D = createNoise3D();
-  let particleProps = new Float32Array(particlePropsLength);
-  let center: [number, number] = [0, 0];
+  const particlePropsRef = useRef(new Float32Array(particlePropsLength));
+  const center = useRef<[number, number]>([0, 0]);
 
-  const TAU: number = 2 * Math.PI;
+  const TAU = 2 * Math.PI;
 
-  const rand = (n: number): number => n * Math.random();
-  const randRange = (n: number): number => n - rand(2 * n);
-  const fadeInOut = (t: number, m: number): number => {
+  const rand = (n: number) => n * Math.random();
+  const randRange = (n: number) => n - rand(2 * n);
+  const fadeInOut = (t: number, m: number) => {
     const hm = 0.5 * m;
     return Math.abs(((t + hm) % m) - hm) / hm;
   };
-  const lerp = (n1: number, n2: number, speed: number): number =>
+  const lerp = (n1: number, n2: number, speed: number) =>
     (1 - speed) * n1 + speed * n2;
 
-  const initParticle = (i: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  const initParticle = useCallback(
+    (i: number) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-    const x = rand(canvas.width);
-    const y = center[1] + randRange(rangeY);
-    const vx = 0;
-    const vy = 0;
-    const life = 0;
-    const ttl = baseTTL + rand(rangeTTL);
-    const speed = baseSpeed + rand(rangeSpeed);
-    const radius = baseRadius + rand(rangeRadius);
-    const hue = baseHue + rand(rangeHue);
+      const x = rand(canvas.width);
+      const y = center.current[1] + randRange(rangeY);
+      const vx = 0;
+      const vy = 0;
+      const life = 0;
+      const ttl = baseTTL + rand(rangeTTL);
+      const speed = baseSpeed + rand(rangeSpeed);
+      const radius = baseRadius + rand(rangeRadius);
+      const hue = baseHue + rand(rangeHue);
 
-    particleProps.set([x, y, vx, vy, life, ttl, speed, radius, hue], i);
-  };
+      particlePropsRef.current.set([x, y, vx, vy, life, ttl, speed, radius, hue], i);
+    },
+    [baseTTL, rangeTTL, baseSpeed, rangeSpeed, baseRadius, rangeRadius, baseHue, rangeHue, rangeY]
+  );
 
-  const initParticles = () => {
-    tick = 0;
-    particleProps = new Float32Array(particlePropsLength);
+  const initParticles = useCallback(() => {
+    tickRef.current = 0;
+    particlePropsRef.current = new Float32Array(particlePropsLength);
 
     for (let i = 0; i < particlePropsLength; i += particlePropCount) {
       initParticle(i);
     }
-  };
+  }, [initParticle, particlePropCount, particlePropsLength]);
 
   const drawParticle = (
     x: number,
@@ -96,7 +99,7 @@ export const Vortex = (props: VortexProps) => {
     ttl: number,
     radius: number,
     hue: number,
-    ctx: CanvasRenderingContext2D,
+    ctx: CanvasRenderingContext2D
   ) => {
     ctx.save();
     ctx.lineCap = "round";
@@ -110,61 +113,63 @@ export const Vortex = (props: VortexProps) => {
     ctx.restore();
   };
 
-  const checkBounds = (x: number, y: number, canvas: HTMLCanvasElement) => {
-    return x > canvas.width || x < 0 || y > canvas.height || y < 0;
-  };
+  const checkBounds = (x: number, y: number, canvas: HTMLCanvasElement) =>
+    x > canvas.width || x < 0 || y > canvas.height || y < 0;
 
-  const updateParticle = (i: number, ctx: CanvasRenderingContext2D) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  const updateParticle = useCallback(
+    (i: number, ctx: CanvasRenderingContext2D) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-    const i2 = 1 + i,
-      i3 = 2 + i,
-      i4 = 3 + i,
-      i5 = 4 + i,
-      i6 = 5 + i,
-      i7 = 6 + i,
-      i8 = 7 + i,
-      i9 = 8 + i;
+      const p = particlePropsRef.current;
+      const i2 = i + 1,
+        i3 = i + 2,
+        i4 = i + 3,
+        i5 = i + 4,
+        i6 = i + 5,
+        i7 = i + 6,
+        i8 = i + 7,
+        i9 = i + 8;
 
-    const x = particleProps[i];
-    const y = particleProps[i2];
-    const n = noise3D(x * xOff, y * yOff, tick * zOff) * noiseSteps * TAU;
-    const vx = lerp(particleProps[i3], Math.cos(n), 0.5);
-    const vy = lerp(particleProps[i4], Math.sin(n), 0.5);
-    let life = particleProps[i5];
-    const ttl = particleProps[i6];
-    const speed = particleProps[i7];
-    const x2 = x + vx * speed;
-    const y2 = y + vy * speed;
-    const radius = particleProps[i8];
-    const hue = particleProps[i9];
+      const x = p[i];
+      const y = p[i2];
+      const n = noise3D(x * xOff, y * yOff, tickRef.current * zOff) * noiseSteps * TAU;
+      const vx = lerp(p[i3], Math.cos(n), 0.5);
+      const vy = lerp(p[i4], Math.sin(n), 0.5);
+      let life = p[i5];
+      const ttl = p[i6];
+      const speed = p[i7];
+      const x2 = x + vx * speed;
+      const y2 = y + vy * speed;
+      const radius = p[i8];
+      const hue = p[i9];
 
-    drawParticle(x, y, x2, y2, life, ttl, radius, hue, ctx);
+      drawParticle(x, y, x2, y2, life, ttl, radius, hue, ctx);
 
-    life++;
+      life++;
+      p[i] = x2;
+      p[i2] = y2;
+      p[i3] = vx;
+      p[i4] = vy;
+      p[i5] = life;
 
-    particleProps[i] = x2;
-    particleProps[i2] = y2;
-    particleProps[i3] = vx;
-    particleProps[i4] = vy;
-    particleProps[i5] = life;
+      if (checkBounds(x, y, canvas) || life > ttl) {
+        initParticle(i);
+      }
+    },
+    [noise3D, initParticle]
+  );
 
-    if (checkBounds(x, y, canvas) || life > ttl) {
-      initParticle(i);
-    }
-  };
+  const drawParticles = useCallback(
+    (ctx: CanvasRenderingContext2D) => {
+      for (let i = 0; i < particlePropsLength; i += particlePropCount) {
+        updateParticle(i, ctx);
+      }
+    },
+    [updateParticle, particlePropsLength, particlePropCount]
+  );
 
-  const drawParticles = (ctx: CanvasRenderingContext2D) => {
-    for (let i = 0; i < particlePropsLength; i += particlePropCount) {
-      updateParticle(i, ctx);
-    }
-  };
-
-  const renderGlow = (
-    canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D,
-  ) => {
+  const renderGlow = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     ctx.save();
     ctx.filter = "blur(8px) brightness(200%)";
     ctx.globalCompositeOperation = "lighter";
@@ -178,30 +183,25 @@ export const Vortex = (props: VortexProps) => {
     ctx.restore();
   };
 
-  const renderToScreen = (
-    canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D,
-  ) => {
+  const renderToScreen = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
     ctx.drawImage(canvas, 0, 0);
     ctx.restore();
   };
 
-  const resize = (canvas: HTMLCanvasElement) => {
-    const { innerWidth, innerHeight } = window;
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-    center[0] = 0.5 * canvas.width;
-    center[1] = 0.5 * canvas.height;
-  };
+  const resize = useCallback((canvas: HTMLCanvasElement) => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    center.current[0] = canvas.width / 2;
+    center.current[1] = canvas.height / 2;
+  }, []);
 
   const draw = useCallback(
     (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
-      tick++;
+      tickRef.current++;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       ctx.fillStyle = backgroundColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -209,25 +209,21 @@ export const Vortex = (props: VortexProps) => {
       renderGlow(canvas, ctx);
       renderToScreen(canvas, ctx);
 
-      animationFrameId.current = window.requestAnimationFrame(() =>
-        draw(canvas, ctx),
-      );
+      animationFrameId.current = requestAnimationFrame(() => draw(canvas, ctx));
     },
-    [backgroundColor],
+    [backgroundColor, drawParticles]
   );
 
   const setup = useCallback(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (canvas && container) {
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        resize(canvas);
-        initParticles();
-        draw(canvas, ctx);
-      }
-    }
-  }, [draw]);
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    resize(canvas);
+    initParticles();
+    draw(canvas, ctx);
+  }, [draw, initParticles, resize]);
 
   const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
@@ -235,16 +231,14 @@ export const Vortex = (props: VortexProps) => {
     if (canvas && ctx) {
       resize(canvas);
     }
-  }, []);
+  }, [resize]);
 
   useEffect(() => {
     setup();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
     };
   }, [setup, handleResize]);
 
@@ -258,10 +252,7 @@ export const Vortex = (props: VortexProps) => {
       >
         <canvas ref={canvasRef}></canvas>
       </motion.div>
-
-      <div className={cn("relative z-10", props.className)}>
-        {props.children}
-      </div>
+      <div className={cn("relative z-10", props.className)}>{props.children}</div>
     </div>
   );
 };

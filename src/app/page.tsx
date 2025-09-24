@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <div style={{ width: "100%", height: "100vh", position: "relative" }}>
         <Plasma
-          color="#ff6b35"
+          color="#974EB5"
           speed={1}
           direction="forward"
           scale={1.1}
