@@ -9,28 +9,35 @@ export default function Page() {
     const cardDatas = [
         {
             id: 1,
-            image: "/images/project1.jpeg",
+            image: "/images/project1.png",
             projectName: "Project Beta",
             decscription: "E-commerce platform with seamless payment integration.",
             techStack: ["Next.js", "MongoDB", "Stripe"]
         },
         {
             id: 2,
-            image: "/images/project1.jpeg",
+            image: "/images/project2.png",
             projectName: "Project Beta",
             decscription: "E-commerce platform with seamless payment integration.",
             techStack: ["Next.js", "MongoDB", "Stripe"]
         },
         {
             id: 3,
-            image: "/images/project1.jpeg",
+            image: "/images/project3.png",
             projectName: "Project Beta",
             decscription: "E-commerce platform with seamless payment integration.",
             techStack: ["Next.js", "MongoDB", "Stripe"]
         },
         {
             id: 4,
-            image: "/images/project1.jpeg",
+            image: "/images/project4.png",
+            projectName: "Project Beta",
+            decscription: "E-commerce platform with seamless payment integration.",
+            techStack: ["Next.js", "MongoDB", "Stripe"]
+        },
+        {
+            id: 5,
+            image: "/images/project5.png",
             projectName: "Project Beta",
             decscription: "E-commerce platform with seamless payment integration.",
             techStack: ["Next.js", "MongoDB", "Stripe"]
