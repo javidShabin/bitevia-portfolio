@@ -16,10 +16,9 @@ export const Header = () => {
                         <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
                             <Link href="/" className="text-white/90 hover:text-white transition-colors duration-300">Home</Link>
                             <Link href="/about" className="text-white/90 hover:text-white transition-colors duration-300">About</Link>
-                            <Link href="/services" className="text-white/90 hover:text-white transition-colors duration-300">Services</Link>
+                            <Link href="/service" className="text-white/90 hover:text-white transition-colors duration-300">Services</Link>
                             <Link href="/contact" className="text-white/90 hover:text-white transition-colors duration-300">Contact</Link>
-                            <Link href="/portfolio" className="text-white/90 hover:text-white transition-colors duration-300">Portfolio</Link>
-                            <Link href="/projects" className="text-white/90 hover:text-white transition-colors duration-300">Projects</Link>
+                            <Link href="/projects" className="text-white/90 hover:text-white transition-colors duration-300">Portfolio</Link>
                         </div>
 
                         {/* CTA Button */}
